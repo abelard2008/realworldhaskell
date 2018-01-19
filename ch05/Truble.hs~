@@ -1,4 +1,0 @@
-upcaseFirst (c:cs) = toUpper c
-
-cameCase :: String -> String
-cameCase xs = concat (map upcaseFirst (words xs))

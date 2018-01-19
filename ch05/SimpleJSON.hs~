@@ -1,2 +1,0 @@
---file: ch05/SimpleJSON.hs
-data JValue = JString String
