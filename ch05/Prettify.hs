@@ -1,5 +1,17 @@
 module Prettify(
-  Doc ) where
+    Doc
+    , (<>)
+    , empty
+    , char
+    , text
+    , line
+    , double
+    , fsep
+    , hcat
+    , punctuate
+    , compact
+    , pretty
+    ) where
 
 punctuate :: Doc -> [Doc] -> [Doc]
 punctuate p [] = []
@@ -72,20 +84,20 @@ compact x = transform [x]
             _ `Union`  b   -> transform (b:ds)
 
 pretty :: Int -> Doc -> String
-pretty width x = best o [x]
-  where best col (d:ds)
+pretty width x = best 0 [x]
+  where best col (d:ds) =
           case d of
             Empty         -> best col ds
             Char c        -> c : best (col + 1) ds
             Text s        -> s ++ best (col + length s) ds
-            Line          -> '\n' : best o ds
+            Line          -> '\n' : best 0 ds
             a `Concat` b  -> best col (a:b:ds)
             a `Union`  b  -> nicest col (best col (a:ds))
                                       (best col (b:ds))
         best _ _ = ""
 
         nicest col a b | (width - least) `fits` a = a
-                       | otherwise
+                       | otherwise                = b
                        where least = min width col
           
 fits :: Int -> String -> Bool
